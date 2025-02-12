@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sabine Hospital Expansion Map</title>
+  <!-- Google Fonts for a Professional Look -->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" rel="stylesheet">
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    /* Base Reset & Typography */
+    * { box-sizing: border-box; }
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: 'Roboto', sans-serif;
+      background-color: #f0f2f5;
+      height: 100%;
+    }
+    /* Header Styling */
+    header {
+      background: linear-gradient(135deg, #1d2b64, #f8cdda);
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    header h1 {
+      margin: 0;
+      font-size: 28px;
+      font-weight: 700;
+    }
+    header p {
+      margin: 8px 0 0;
+      font-size: 16px;
+      font-weight: 500;
+    }
+    /* Map Container */
+    #map {
+      height: calc(100vh - 100px);
+      width: 100%;
+    }
+    /* Popup Styling */
+    .leaflet-popup-content {
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .leaflet-popup-content b {
+      color: #1d2b64;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Sabine Hospital Expansion Map</h1>
+    <p>Project Status &amp; Details for Investors</p>
+  </header>
+  
+  <div id="map"></div>
+  
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    // Initialize the map centered on South India
+    const map = L.map('map').setView([11.0, 78.0], 6);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
+      maxZoom: 18,
+    }).addTo(map);
+    
+    // Facilities data with project details
+    const facilities = [
+      { 
+        name: "Sabine Tanur", 
+        lat: 11.0738, 
+        lng: 75.9612, 
+        status: "Operational", 
+        details: "Fully operational and serving the local community with a strong track record in quality healthcare." 
+      },
+      { 
+        name: "Sabine Trivandrum", 
+        lat: 8.5241, 
+        lng: 76.9366, 
+        status: "Operational", 
+        details: "A trusted center in Thiruvananthapuram, consistently delivering high-quality healthcare services." 
+      },
+      { 
+        name: "Sabine Muvattupuzha", 
+        lat: 10.1122, 
+        lng: 76.4746, 
+        status: "Operational", 
+        details: "Renowned for community trust and excellence in patient care." 
+      },
+      { 
+        name: "Kasaragod - WinTouch Hospital", 
+        lat: 12.5000, 
+        lng: 74.9877, 
+        status: "Planned", 
+        details: "Site selected based on data-driven insights. Final approvals and planning are underway." 
+      },
+      { 
+        name: "Kasaragod - Unity Hospital", 
+        lat: 12.5005, 
+        lng: 74.9870, 
+        status: "Planned", 
+        details: "In the planning phase with detailed market studies guiding the project scope." 
+      },
+      { 
+        name: "Kollam - Nani Memorial Hospital", 
+        lat: 8.8932, 
+        lng: 76.6143, 
+        status: "Under Construction", 
+        details: "Construction in progress with an expected completion in Q4 2024." 
+      },
+      { 
+        name: "Kollam - Mediterina Hospital", 
+        lat: 8.8940, 
+        lng: 76.6150, 
+        status: "Under Construction", 
+        details: "Under construction with robust infrastructure development underway." 
+      },
+      { 
+        name: "Kannur", 
+        lat: 11.8745, 
+        lng: 75.3704, 
+        status: "Planned", 
+        details: "Final site selection pending. Detailed feasibility studies are in progress." 
+      },
+      { 
+        name: "Palakkad - Thankam Hospital", 
+        lat: 10.7867, 
+        lng: 76.6548, 
+        status: "Planned", 
+        details: "Planned to extend quality care to the Palakkad region. Preparatory work is ongoing." 
+      },
+      { 
+        name: "Kozhikode - Bareshell (Opp Bhima Mavoor Road)", 
+        lat: 11.2588, 
+        lng: 75.7804, 
+        status: "Under Construction", 
+        details: "Construction nearing completion with improved access to healthcare in the region." 
+      },
+      { 
+        name: "Kozhikode - Bareshell (Near Sarovaram)", 
+        lat: 11.2595, 
+        lng: 75.7810, 
+        status: "Under Construction", 
+        details: "Under construction with modern facilities and cutting-edge technology integration." 
+      },
+      { 
+        name: "Kochi", 
+        lat: 9.9312, 
+        lng: 76.2673, 
+        status: "Planned", 
+        details: "Location identified; planning is in progress with market analysis ongoing." 
+      },
+      { 
+        name: "Mysore", 
+        lat: 12.2958, 
+        lng: 76.6394, 
+        status: "Planned", 
+        details: "Strategically selected for expansion. Awaiting final approvals and detailed planning." 
+      },
+      { 
+        name: "Mangalore", 
+        lat: 12.9141, 
+        lng: 74.8559, 
+        status: "Planned", 
+        details: "Data-driven selection process completed. The planning and design phase will commence soon." 
+      },
+      { 
+        name: "Bangalore", 
+        lat: 12.9716, 
+        lng: 77.5946, 
+        status: "Under Planning", 
+        details: "Expansion includes key areas such as OMR and Athibilli. Final site selection and planning are underway." 
+      },
+      { 
+        name: "Tirunelveli", 
+        lat: 8.7139, 
+        lng: 77.7567, 
+        status: "Planned", 
+        details: "Identified as a high-growth area. Detailed studies are being carried out." 
+      },
+      { 
+        name: "Coimbatore", 
+        lat: 11.0168, 
+        lng: 76.9558, 
+        status: "Planned", 
+        details: "Planned expansion to address the rising demand for specialized healthcare services." 
+      },
+      { 
+        name: "Madurai", 
+        lat: 9.9252, 
+        lng: 78.1198, 
+        status: "Planned", 
+        details: "Part of the strategic expansion in Tamil Nadu. Market studies and site evaluations are in progress." 
+      },
+      { 
+        name: "Nagercoil", 
+        lat: 8.1786, 
+        lng: 77.4286, 
+        status: "Planned", 
+        details: "Planned facility to serve the region with comprehensive healthcare services." 
+      },
+      { 
+        name: "Chennai - Tambaram", 
+        lat: 12.9200, 
+        lng: 80.1000, 
+        status: "Planned", 
+        details: "Focused on expanding services in the Tambaram region. Detailed planning and approvals are underway." 
+      },
+      { 
+        name: "Hyderabad", 
+        lat: 17.3850, 
+        lng: 78.4867, 
+        status: "Planned", 
+        details: "Expansion in Telangana with site selection and feasibility studies in progress." 
+      }
+    ];
+    
+    // Add markers to the map with a popup showing full facility details on first click.
+    facilities.forEach(facility => {
+      const popupContent = `
+        <b>${facility.name}</b><br>
+        <em>Status: ${facility.status}</em><br><br>
+        ${facility.details}
+      `;
+      L.marker([facility.lat, facility.lng]).addTo(map)
+        .bindPopup(popupContent)
+        .bindTooltip(facility.name, { direction: 'top', offset: L.point(0, -10), opacity: 0.9 });
+    });
+  </script>
+</body>
+</html>
